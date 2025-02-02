@@ -1,0 +1,51 @@
+.login-container {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    max-width: 400px;
+    margin: auto;
+  }
+  
+  .google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .google-btn img {
+    width: 20px;
+    margin-right: 10px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .sign-in-btn {
+    width: 100%;
+    padding: 10px;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .forgot-password, .one-time-link {
+    color: #555;
+    font-size: 14px;
+  }
+  
+  a {
+    color: blue;
+  }
+  

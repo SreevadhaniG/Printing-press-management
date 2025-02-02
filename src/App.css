@@ -1,0 +1,91 @@
+.App-header {
+  font-family: Arial, sans-serif;
+  color: #5d1a1a; /* Match the text color */
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f8f3f2;
+}
+
+.festival-name {
+  font-weight: bold;
+}
+
+.gold-rate-value {
+  font-weight: bold;
+}
+
+.contact-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.currency-selector img {
+  width: 20px;
+  height: 14px;
+  margin-right: 5px;
+}
+
+.header-middle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  background-color: #fff6f6;
+}
+
+.logo img {
+  height: 50px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-bar input {
+  width: 300px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-bar button {
+  padding: 8px 12px;
+  border: none;
+  background-color: #5d1a1a;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.purchase-plan-button {
+  padding: 10px 15px;
+  background-color: #d38383;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.header-bottom {
+  background-color: #fff;
+  padding: 10px 20px;
+}
+
+.navigation {
+  display: flex;
+  gap: 15px;
+}
+
+.navigation a {
+  text-decoration: none;
+  color: #5d1a1a;
+  font-weight: bold;
+}
