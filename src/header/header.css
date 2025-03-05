@@ -1,12 +1,220 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap');
 
-header {
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1;
+  transition: transform 0.3s ease;
+}
+
+.header.hidden {
+  transform: translateY(-100%);
+}
+
+.header-content {
+  width: 100%;
+  max-width: 1440px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative; /* Added position relative */
+}
+
+.brand-name {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #000;
+  display: block; 
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    height: 60px;
+  }
+
+  .header-content {
+    padding: 0 1rem;
+  }
+  
+  .brand-name {
+    font-size: 1rem;
+  }
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  margin-top: 0;
+  padding: 0; /* Remove any padding */
+}
+
+.hover-bg-light:hover {
+  background-color: #f8f9fa;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.logo {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #000;
+  padding: 0;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .logo {
+    font-size: 1rem;
+  }
+}
+
+.profile-container {
+  position: relative;
+  margin-left: auto;
+}
+
+.profile-button {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+.profile-initial {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1rem;
-  background-color: #fff;
+  font-weight: 500;
+  font-family: 'Raleway', sans-serif;
 }
-h1 {
+
+.profile-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  min-width: 200px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+  margin-top: 0.5rem;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 1rem;
+}
+
+.profile-photo-large {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
+}
+
+.profile-initial-large {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-family: 'Raleway', sans-serif;
 }
-.list-unstyled li a:hover {
-  background-color: whitesmoke;
+
+.user-email {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0;
+  text-align: center;
+}
+
+.profile-menu button {
+  width: 100%;
+  padding: 8px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.profile-menu button:hover {
+  background: #c82333;
+}
+
+.login-button {
+  width: 100%;
+  padding: 8px 16px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.login-button:hover {
+  background: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .profile-menu {
+    min-width: 160px;
+  }
+}
+
+.profile-icon {
+  font-size: 24px;
+  color: #000;
 }

@@ -1,0 +1,287 @@
+.product-description {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px;
+  margin-top: 80px; /* Creates space below header */
+}
+
+.product-container {
+  display: flex;
+  padding: 2rem;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.product-image {
+  flex: 0 0 40%;
+  position: sticky;
+  top: 100px; /* Keeps some space from top */
+  height: fit-content;
+}
+
+.product-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.5rem; /* Reduced margin bottom */
+}
+
+.product-title {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  color: #333;
+  margin-bottom: 3.5rem; /* Increased margin bottom to create larger gap */
+}
+.product-description .top{
+  margin-top: 800px;
+}
+.product-form {
+  flex: 0 0 60%;
+  overflow: hidden;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.form-slider {
+  display: flex;
+  width: 200%;
+  transition: transform 0.3s ease;
+}
+
+.form-step {
+  min-width: 100%;
+  padding: 0 1rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+.form-group select{
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.form-group input,
+.form-group textarea{
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-group input.error,
+.form-group textarea.error {
+  border-color: #dc3545;
+}
+
+.error {
+  border-color: #dc3545;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+
+.form-group input.error:focus,
+.form-group textarea.error:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-group input[type="file"] {
+  padding: 0.5rem;
+  border: 1px dashed #ddd;
+  background: #f8f9fa;
+}
+
+.form-group input[type="file"]:hover {
+  border-color: #86b7fe;
+}
+
+.file-hint {
+  display: block;
+  color: #6c757d;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #000;
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #eee;
+  color: #333;
+}
+
+.product-card {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 992px) {
+  .product-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .product-image {
+    position: relative;
+    top: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-container {
+    flex-direction: column;
+  }
+
+  .product-image,
+  .product-form {
+    flex: 0 0 100%;
+  }
+
+  .product-image {
+    position: relative;
+    top: 0;
+  }
+}
+
+.price-calculator {
+  margin-top: 2.5rem; /* Increased margin top */
+  padding: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.price-details {
+  margin-top: 10px;
+}
+
+.price-details p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.total-price {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+  font-size: 1.2em;
+  color: #2c3e50;
+}
+
+.form-control-sm {
+  height: 32px;
+  padding: 4px 8px;
+  font-size: 0.875rem;
+  width: 100%;
+  max-width: 300px;
+}
+
+.custom-size-inputs input {
+  width: 120px;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.align-self-center {
+  align-self: center;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+/* Make all form inputs smaller */
+.form-group input,
+.form-group select,
+.form-group textarea {
+  max-width: 600px;
+  font-size: 0.875rem;
+}
+
+.form-group textarea {
+  height: 100px;
+}
+
+.readonly-input {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+  opacity: 0.7;
+  border: 1px solid #dee2e6;
+}
+
+.readonly-input:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: #dee2e6;
+}
+
+.size-hint {
+  display: block;
+  color: #6c757d;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.custom-size-inputs {
+  margin-top: 1rem;
+}

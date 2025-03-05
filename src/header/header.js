@@ -1,12 +1,39 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "./header.css";
+import "./Header.css";
+import { useAuth } from '../context/AuthContext';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase/config';
 
 const Header = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [menuItems, setMenuItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const navigate = useNavigate();
+
+  const [prevScrollPos, setPrevScrollPos] = useState(window.pageYOffset);
+  const [visible, setVisible] = useState(true);
+
+  const { user } = useAuth();
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  const defaultProfileImage = '/assets/default-profile.png';
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollPos = window.pageYOffset;
+      setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
+      setPrevScrollPos(currentScrollPos);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [prevScrollPos]);
 
   useEffect(() => {
     // Fetch menu items dynamically
@@ -32,6 +59,79 @@ const Header = () => {
     setShowSidebar(!showSidebar);
   };
 
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+
+    if (value.trim() === "") {
+      setSearchResults([]);
+      setShowSearchResults(false);
+      return;
+    }
+
+    // Search through menu items and other content
+    const results = menuItems.filter(item =>
+      item.toLowerCase().includes(value.toLowerCase())
+    );
+    
+    setSearchResults(results);
+    setShowSearchResults(true);
+  };
+
+  const handleSearchResultClick = (item) => {
+    setShowSearchResults(false);
+    setSearchTerm("");
+    
+    // Navigate based on the clicked item
+    const itemPath = item.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/products/${itemPath}`);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
+  const getInitial = (email) => {
+    return email ? email[0].toUpperCase() : '?';
+  };
+
+  const searchBarSection = (
+    <div className="search-container position-relative">
+      <div className="search-bar input-group me-3 d-none d-md-flex">
+        <input
+          type="search"
+          className="form-control"
+          placeholder="Search"
+          value={searchTerm}
+          onChange={handleSearch}
+          onFocus={() => setShowSearchResults(true)}
+        />
+        <button className="btn border-0" id="search-icon">
+          <i className="bi bi-search"></i>
+        </button>
+      </div>
+      
+      {showSearchResults && searchResults.length > 0 && (
+        <div className="search-results position-absolute w-100 bg-white border shadow-sm">
+          {searchResults.map((result, index) => (
+            <div
+              key={index}
+              className="search-result-item p-2 cursor-pointer hover-bg-light"
+              onClick={() => handleSearchResultClick(result)}
+            >
+              {result}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <>
 
@@ -43,44 +143,73 @@ const Header = () => {
         rel="stylesheet"
       />
 
-      <header className="d-flex justify-content-between align-items-center p-3 border-bottom">
-        {/* Left Section */}
-        <div className="d-flex align-items-center">
-          <button
-            className="btn border-0 me-2"
-            onClick={handleSidebarToggle}
-          >
-            <i className="bi bi-list"></i>
-          </button>
-          <h1 className="m-0 text-uppercase fw-bold">Pentagon Printers</h1>
-        </div>
-
-        {/* Center Section - Empty on larger screens */}
-        <div className="d-none d-md-block"></div>
-
-        {/* Right Section */}
-        <div className="d-flex align-items-center">
-          <div className="search-bar input-group me-3 d-none d-md-flex">
-            <input
-              type="search"
-              className="form-control"
-              placeholder="Search"
-              aria-label="Search"
-              aria-describedby="search-icon"
-            />
-            <button className="btn border-0" id="search-icon">
-              <i className="bi bi-search"></i>
+      <header className={`header ${visible ? '' : 'hidden'}`}>
+        <div className="header-content">
+          {/* Left Section */}
+          <div className="d-flex align-items-center">
+            <button
+              className="btn border-0 me-2"
+              onClick={handleSidebarToggle}
+            >
+              <i className="bi bi-list"></i>
             </button>
+            
+            <h1 className="logo">Pentagon Printers</h1>
           </div>
-          <button className="btn border-0 me-3 d-none d-md-block">
-            <i className="bi bi-telephone"></i>
-          </button>
-          <button className="btn border-0 me-3 d-none d-md-block">
-            <i className="bi bi-cart"></i>
-          </button>
-          <button className="btn border-0" onClick={handleLoginClick}>
-            <i className="bi bi-person"></i>
-          </button>
+
+          {/* Center Section - Empty on larger screens */}
+          <div className="d-none d-md-block"></div>
+
+          {/* Right Section */}
+          <div className="d-flex align-items-center">
+            
+            <button className="btn border-0 me-3 d-none d-md-block">
+              <i className="bi bi-telephone"></i>
+            </button>
+            <button className="btn border-0 me-3 d-none d-md-block">
+              <i className="bi bi-cart"></i>
+            </button>
+            <div className="profile-container">
+              <div className="profile-section">
+                <button 
+                  className="profile-button"
+                  onClick={() => setShowProfileMenu(!showProfileMenu)}
+                  aria-label="Profile menu"
+                >
+                  {user ? (
+                    <div className="profile-initial">
+                      {getInitial(user.email)}
+                    </div>
+                  ) : (
+                    <i className="bi bi-person-circle profile-icon"></i>
+                  )}
+                </button>
+                
+                {showProfileMenu && (
+                  <div className="profile-menu">
+                    {user ? (
+                      <>
+                        <div className="profile-info">
+                          <div className="profile-initial-large">
+                            {getInitial(user.email)}
+                          </div>
+                          <p className="user-email">{user.email}</p>
+                        </div>
+                        <button onClick={() => handleSignOut()}>Sign Out</button>
+                      </>
+                    ) : (
+                      <button 
+                        className="login-button"
+                        onClick={() => navigate('/login')}
+                      >
+                        Sign In
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -169,24 +298,7 @@ const Header = () => {
           >
             ×
           </span>
-          <h2 className="mb-3 mt-3">Login / Sign In</h2>
-          <form>
-            <div className="mb-3">
-              <label htmlFor="username" className="form-label">
-                Username
-              </label>
-              <input type="text" className="form-control" id="username" />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label">
-                Password
-              </label>
-              <input type="password" className="form-control" id="password" />
-            </div>
-            <button type="submit" className="btn btn-primary w-100">
-              Login
-            </button>
-          </form>
+          
         </div>
       )}
     </>

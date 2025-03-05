@@ -1,48 +1,113 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { signInWithEmail, signInWithGoogle } from "./authService";
+import "./login.css";
+import googleLogo from "./google_logo.png";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(localStorage.getItem("email") || "");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const [rememberMe, setRememberMe] = useState(
+    localStorage.getItem("rememberMe") === "true"
+  );
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleLogin = async () => {
-    const userEmail = await signInWithEmail(email, password);
-    if (userEmail) handleNavigation(userEmail);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const previousPage = location.state?.from || "/product"; // Default to /product if no previous page
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      setError(null);
+      const userEmail = await signInWithEmail(email, password);
+      if (userEmail) {
+        if (rememberMe) {
+          localStorage.setItem("email", email);
+          localStorage.setItem("rememberMe", "true");
+        } else {
+          localStorage.removeItem("email");
+          localStorage.removeItem("rememberMe");
+        }
+        navigate('/product'); // Always navigate to product page after successful login
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleGoogleLogin = async () => {
-    const userEmail = await signInWithGoogle();
-    if (userEmail) handleNavigation(userEmail);
+    try {
+      setLoading(true);
+      const userEmail = await signInWithGoogle();
+      if (userEmail) {
+        navigate('/product');
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleNavigation = (userEmail) => {
-    if (userEmail === "admin.pentagonprinters@gmail.com") {
-      navigate("/admin/home");
+  const handleBackButton = (e) => {
+    e.preventDefault();
+    if (location.state?.from) {
+      navigate(location.state.from);
     } else {
-      navigate("/home");
+      navigate("/product");
     }
   };
 
   return (
     <div className="login-container">
+      <a href="#" className="back-button" onClick={handleBackButton}>
+        ←
+      </a>
       <h2>Welcome Back</h2>
-      <p>Sign in with your email address and your password.</p>
 
       <button className="google-btn" onClick={handleGoogleLogin}>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" alt="Google" />
+        <img src={googleLogo} alt="Google" />
         Sign In with Google
       </button>
 
-      <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-      <button className="sign-in-btn" onClick={handleLogin}>Sign In</button>
+      <div className="divider">
+        <span>OR</span>
+      </div>
 
-      <p className="forgot-password">Forgot your password?</p>
-      <p className="one-time-link">Or use a one-time login link to sign in. <a href="#">Email me the link</a></p>
+      <p>Sign in with your email address and password.</p>
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        onChange={(e) => setPassword(e.target.value)}
+      />
 
-      <p>Don't have an account? <a href="#">Create an Account</a></p>
+      <div className="remember-me">
+        <input
+          type="checkbox"
+          id="remember"
+          checked={rememberMe}
+          onChange={() => setRememberMe(!rememberMe)}
+        />
+        <label htmlFor="remember">Remember Me</label>
+      </div>
+
+      <button className="sign-in-btn" onClick={handleLogin} disabled={loading}>
+        {loading ? "Signing In..." : "Sign In"}
+      </button>
+      {error && <p className="error">{error}</p>}
+      <hr></hr>
+      <p>By clicking on Sign In, you are agreeing to the <span style={{fontWeight: "bold", cursor: "pointer"}}>Terms and Conditions</span>.</p>
     </div>
   );
 };
