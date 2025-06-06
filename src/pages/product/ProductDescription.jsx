@@ -2,6 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './ProductDescription.css';
 import { useAuth } from '../../context/AuthContext';
+import { addDays, format } from 'date-fns';
+
+const calculateDeliveryDate = (quantity, productName) => {
+    const today = new Date();
+    const baseProcessingDays = 2; // Minimum processing days
+    let additionalDays = Math.ceil(quantity / 100); // 1 day per 100 items
+
+    // Add product-specific processing time
+    switch(productName.toLowerCase()) {
+        case 'albums':
+            additionalDays += 3; // Albums need more time
+            break;
+        case 'crystal items':
+            additionalDays += 2; // Crystal items need special handling
+            break;
+        case 'shirts':
+            additionalDays += Math.ceil(quantity / 50); // Shirts need more time for larger quantities
+            break;
+        default:
+            additionalDays += 1;
+    }
+
+    const totalDays = baseProcessingDays + additionalDays;
+    let deliveryDate = new Date(today);
+    let daysAdded = 0;
+    
+    while (daysAdded < totalDays) {
+        deliveryDate.setDate(deliveryDate.getDate() + 1);
+        // Skip weekends
+        if (deliveryDate.getDay() !== 0 && deliveryDate.getDay() !== 6) {
+            daysAdded++;
+        }
+    }
+    
+    return deliveryDate.toISOString().split('T')[0];
+};
 
 const ProductDescription = () => {
   const navigate = useNavigate();
@@ -23,6 +59,7 @@ const ProductDescription = () => {
     description: '',
     screenshots: [],
     quantity: '',
+    deliveryDate: '',
     sampleDesign: null
   });
   const [totalPrice, setTotalPrice] = useState(0);
@@ -43,6 +80,16 @@ const ProductDescription = () => {
     return () => clearInterval(interval); 
   }, [products.length]);
 
+  useEffect(() => {
+    if (formData.quantity) {
+        const suggestedDate = calculateDeliveryDate(formData.quantity, productName);
+        setFormData(prev => ({
+            ...prev,
+            deliveryDate: suggestedDate
+        }));
+    }
+  }, [formData.quantity, productName]);
+
   const getMaxQuantity = (productName) => {
     const limits = {
       'Visiting Cards': 2000,
@@ -53,6 +100,20 @@ const ProductDescription = () => {
       'Notebooks': 10
     };
     return limits[productName] || 100;
+  };
+
+  const validateDeliveryDate = (date) => {
+    const selectedDate = new Date(date);
+    const today = new Date();
+    const twoMonthsFromNow = addDays(today, 60);
+    
+    if (selectedDate <= today) {
+      return 'Delivery date must be a future date';
+    }
+    if (selectedDate > twoMonthsFromNow) {
+      return 'Delivery date must be within 2 months from today';
+    }
+    return '';
   };
 
   const validateQuantity = (value, productName) => {
@@ -94,6 +155,7 @@ const ProductDescription = () => {
 
   const validateStep2 = () => {
     const newErrors = {};
+    const deliveryDateError = validateDeliveryDate(formData.deliveryDate);
 
     if (!formData.email?.trim()) {
       newErrors.email = 'Email is required';
@@ -111,6 +173,9 @@ const ProductDescription = () => {
       newErrors.address = 'Address is required';
     }
 
+  if (deliveryDateError) {
+    newErrors.deliveryDate = deliveryDateError;
+  }
     return newErrors;
 };
 
@@ -171,6 +236,22 @@ const ProductDescription = () => {
       );
       setTotalPrice(newPrice);
     }
+
+    // Allow manual override of delivery date
+    if (name === 'deliveryDate') {
+        const selectedDate = new Date(value);
+        const today = new Date();
+        
+        // Ensure selected date is not in the past
+        if (selectedDate < today) {
+            alert('Please select a future date for delivery');
+            const suggestedDate = calculateDeliveryDate(Number(formData.quantity), productName);
+            setFormData(prev => ({
+                ...prev,
+                deliveryDate: suggestedDate
+            }));
+        }
+    }
   };
 
   const handleNextStep = (e) => {
@@ -193,14 +274,33 @@ const ProductDescription = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const stepErrors = validateStep2();
-    localStorage.setItem('pricingInfo', JSON.stringify({ formData, totalPrice }));
-
+  
     if (Object.keys(stepErrors).length === 0) {
-      localStorage.removeItem('productFormData'); // Clear storage after submission
+      const orderData = {
+        customerDetails: {
+            email: user?.email || '',
+            contact: formData.contact,
+            address: formData.address,
+            deliveryDate: formData.deliveryDate
+        },
+        productDetails: {
+            productName: productName,
+            ...formData
+        },
+        assignedEmployees: [], // Add this line
+        orderStatus: 'pending',
+        pricing: {
+            totalPrice,
+            baseAmount: basePrice[productName] || basePrice.default
+        }
+      };
+      
+      localStorage.setItem('pricingInfo', JSON.stringify(orderData));
+      
       navigate('/payment', {
         state: {
-          formData: formData, // Contains product details
-          totalPrice: totalPrice // Pricing info
+          productName,
+          formData: orderData.formData,
         }
       });
     } else {
@@ -216,6 +316,7 @@ const ProductDescription = () => {
     'Photo Frames': 300,
     'Cushions': 450,
     'Notebooks': 200,
+    'Crystal Items': 500,
     default: 5
   };
 
@@ -304,6 +405,21 @@ const ProductDescription = () => {
       behavior: 'smooth'
     });
   };
+
+  // Check authentication first
+  useEffect(() => {
+    if (!user) {
+      // Store current location before redirecting
+      sessionStorage.setItem('redirectUrl', JSON.stringify({
+        pathname: location.pathname,
+        state: location.state
+      }));
+      navigate('/login');
+    }
+  }, [user, navigate, location]);
+
+  // Early return if no user
+  if (!user) return null;
 
   return (
     <div className="product-container">
@@ -521,6 +637,25 @@ const ProductDescription = () => {
               />
               {errors.address && <span className="error-message">{errors.address}</span>}
             </div>
+
+            <div className="form-group">
+  <label>Delivery Date</label>
+  <input
+    type="date"
+    name="deliveryDate"
+    value={formData.deliveryDate}
+    onChange={handleInputChange}
+    min={format(new Date(), 'yyyy-MM-dd')}
+    max={format(addDays(new Date(), 60), 'yyyy-MM-dd')}
+    className={errors.deliveryDate ? 'error' : ''}
+    required
+  />
+  {errors.deliveryDate && <span className="error-message">{errors.deliveryDate}</span>}
+  <small className="delivery-info">
+    * Suggested delivery date based on quantity and product type.
+    You can modify if needed.
+  </small>
+</div>
 
             
               <button 

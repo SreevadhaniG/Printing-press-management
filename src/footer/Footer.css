@@ -6,9 +6,9 @@
   color: #fff;
   font-family: 'Raleway', sans-serif;
   position: relative;
-  padding: 2rem 0 1.5rem;
+  padding: 3rem 0 1rem;
   overflow: hidden;
-  /* Remove margin calculations causing issues */
+  margin-top: auto;
 }
 
 .footer h5 {
@@ -178,7 +178,7 @@
 @media (max-width: 768px) {
   .header-content,
   .footer-content {
-    padding: 0 1rem;
+    padding: 0rem 2rem;
   }
 
   .footer {

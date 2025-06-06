@@ -1,48 +1,72 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "./Footer.css";
 
 const Footer = () => {
+  const currentYear = new Date("2025-03-07T05:41:23Z").getFullYear();
+  
   return (
     <footer className="footer">
-      <Container>
-        <Row className="footer-main">
-          <Col lg={3} md={6} className="brand-col">
+      <div className="footer-content">
+        <div className="footer-main">
+          <div className="brand-col">
             <h2 className="brand-name">Pentagon Printers</h2>
             <p className="brand-desc">Premium Printing Solutions</p>
-          </Col>
-          <Col lg={2} md={6}>
+          </div>
+
+          <div>
             <h5>Products</h5>
             <ul>
-              <li><a href="/products/business-cards">Business Cards</a></li>
-              <li><a href="/products/brochures">Brochures</a></li>
-              <li><a href="/products/stationery">Stationery</a></li>
-              <li><a href="/products/merchandise">Merchandise</a></li>
+              <li><Link to="/products/business-cards" className="footer-link">Business Cards</Link></li>
+              <li><Link to="/products/brochures" className="footer-link">Brochures</Link></li>
+              <li><Link to="/products/envelopes" className="footer-link">Envelopes</Link></li>
+              <li><Link to="/products/stickers" className="footer-link">Stickers</Link></li>
+              <li><Link to="/products/calendars" className="footer-link">Calendars</Link></li>
+              <li><Link to="/products/id-cards" className="footer-link">ID Cards</Link></li>
             </ul>
-          </Col>
-          <Col lg={2} md={6}>
+          </div>
+
+          <div>
             <h5>Company</h5>
             <ul>
-              <li><a href="/about">About Us</a></li>
-              <li><a href="/contact">Contact</a></li>
+              <li><Link to="/about" className="footer-link">About Us</Link></li>
+              <li><Link to="/contact" className="footer-link">Contact</Link></li>
+              <li><Link to="/terms" className="footer-link">Terms of Service</Link></li>
+              <li><Link to="/privacy" className="footer-link">Privacy Policy</Link></li>
             </ul>
-          </Col>
-          <Col lg={5} md={6}>
+          </div>
+
+          <div>
             <h5>Connect</h5>
             <ul>
-              <li><a href="tel:+1234567890">+91 93632 02424</a></li>
-              <li><a href="mailto:info@pentagonprinters.com">info@pentagonprinters.com</a></li>
-              <li>41, Samygoundanpalayam, West Street, Nasiyanur, Erode, Tamil Nadu</li>
+              <li>
+                <a href="tel:+919363202424" className="footer-link">
+                  +91 93632 02424
+                </a>
+              </li>
+              <li>
+                <a href="mailto:info@pentagonprinters.com" className="footer-link">
+                  info@pentagonprinters.com
+                </a>
+              </li>
+              <li>41, Samygoundanpalayam, West Street,</li>
+              <li>Nasiyanur, Erode, Tamil Nadu</li>
               <li>638107</li>
             </ul>
-          </Col>
-        </Row>
-        <Row className="footer-bottom">
-          <Col md={6} className="copyright">
-            <p>&copy; 2025 Pentagon Printers. All rights reserved.</p>
-          </Col>
-        </Row>
-      </Container>
+          </div>
+        </div>
+
+        <div className="footer-bottom">
+          <div className="copyright">
+            <p>&copy; {currentYear} Pentagon Printers. All rights reserved.</p>
+          </div>
+          <div className="legal-links">
+            <Link to="/terms" className="footer-link">Terms of Service</Link>
+            <span className="separator">|</span>
+            <Link to="/privacy" className="footer-link">Privacy Policy</Link>
+          </div>
+        </div>
+      </div>
     </footer>
   );
 };

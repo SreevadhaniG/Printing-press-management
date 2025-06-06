@@ -1,0 +1,126 @@
+.manage-orders {
+    padding: 2rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    margin-top: 60px;
+}
+
+.manage-orders h2 {
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 2rem;
+    font-weight: 600;
+}
+
+.page-title {
+    margin-bottom: 20px;
+}
+
+.sort-controls {
+    margin-bottom: 20px;
+}
+
+.sort-select {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+.order-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.order-id {
+    font-weight: bold;
+    color: #666;
+}
+
+.order-date {
+    color: #888;
+}
+
+.order-details p {
+    margin: 8px 0;
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.status-badge:hover {
+    transform: scale(1.05);
+}
+
+/* Status colors with improved contrast */
+.status-ordered { 
+    background: #e3f2fd; 
+    color: #1565c0;
+}
+
+.status-processing { 
+    background: #fff3e0; 
+    color: #e65100;
+}
+
+.status-shipping { 
+    background: #e8f5e9; 
+    color: #2e7d32;
+}
+
+.status-delivered { 
+    background: #f5f5f5; 
+    color: #424242;
+}
+
+.loading, .error {
+    text-align: center;
+    padding: 40px;
+    font-size: 18px;
+}
+
+.error {
+    color: #dc3545;
+}
+
+@media (max-width: 1200px) {
+    .orders-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .orders-grid {
+        grid-template-columns: 1fr;
+    }
+}

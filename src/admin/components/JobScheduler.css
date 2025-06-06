@@ -1,0 +1,435 @@
+.job-scheduler {
+    padding: 2rem;
+    width: 100%;
+}
+
+.notifications {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.notification {
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    animation: slideIn 0.3s ease;
+}
+
+.notification.success { background-color: #d4edda; color: #155724; }
+.notification.error { background-color: #f8d7da; color: #721c24; }
+.notification.warning { background-color: #fff3cd; color: #856404; }
+.notification.info { background-color: #d1ecf1; color: #0c5460; }
+
+.orders-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 100%;
+    padding: 20px;
+}
+
+.orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.jobs-page {
+    width: 100%;
+    padding: 2rem;
+    position: relative;
+}
+
+.jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.job-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.job-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.job-details {
+    margin: 1rem 0;
+}
+
+.job-details p {
+    margin: 0.5rem 0;
+    color: #555;
+}
+
+.order-card {
+    width: 100%;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+}
+
+.order-card.ordered { border-left-color: #ffc107; }
+.order-card.processing { border-left-color: #17a2b8; }
+.order-card.out_for_delivery { border-left-color: #007bff; }
+.order-card.delivered { border-left-color: #28a745; }
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.priority-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.priority-badge.high { background-color: #ffd7d7; color: #d63031; }
+.priority-badge.medium { background-color: #ffeaa7; color: #fdcb6e; }
+.priority-badge.low { background-color: #c8f7c5; color: #00b894; }
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.delivery-date {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.order-details p {
+    margin: 8px 0;
+}
+
+.assigned-employees {
+    margin: 10px 0;
+    padding: 10px;
+    background: #f5f5f5;
+    border-radius: 4px;
+}
+
+.employee-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.employee-tag {
+    background: #e9ecef;
+    padding: 8px 12px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.employee-name {
+    font-weight: 500;
+}
+
+.rating-display {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.star {
+    color: #ddd;
+    font-size: 14px;
+}
+
+.star.active {
+    color: #ffd700;
+}
+
+.rating-edit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rating-edit input {
+    width: 40px;
+    padding: 2px 4px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.rating-edit button,
+.rating-display button {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.rating-edit button:hover,
+.rating-display button:hover {
+    color: #000;
+}
+
+.assigned-to {
+    font-size: 0.9em;
+    color: #28a745;
+}
+
+.status-controls {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.status-toggle {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.status-toggle input {
+    display: none;
+}
+
+.status-toggle.active {
+    background: #000;
+    color: white;
+    border-color: #000;
+}
+
+.status-toggles {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.status-btn {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #000;
+    color: white;
+    font-weight: 500;
+}
+
+.status-btn:hover {
+    background: white;
+    color: black;
+    box-shadow: inset 0 0 0 2px black;
+}
+
+.status-btn.active {
+    color: white;
+    font-weight: 500;
+}
+
+.status-btn.active[data-status="ordered"] { background-color: #ffc107; }
+.status-btn.active[data-status="processing"] { background-color: #17a2b8; }
+.status-btn.active[data-status="out_for_delivery"] { background-color: #007bff; }
+.status-btn.active[data-status="delivered"] { background-color: #28a745; }
+
+.status-btn.in_progress {
+    background: #007bff;
+}
+
+.status-btn.completed {
+    background: #28a745;
+}
+
+.download-btn {
+    position: fixed;
+    top: 100px;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #000;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+    border: none;
+    z-index: 1000;
+}
+
+.download-btn:hover {
+    transform: translateY(-2px);
+}
+
+.orders-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.order-item {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.order-item.delayed {
+    border: 2px solid #dc3545;
+}
+
+.order-item.completed {
+    border: 2px solid #28a745;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.progress {
+    height: 100%;
+    background-color: #007bff;
+    transition: width 0.3s ease;
+}
+
+.assignment-details {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #dee2e6;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.schedule-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-left: 4px solid #ccc;
+}
+
+.schedule-card.pending { border-left-color: #ffc107; }
+.schedule-card.scheduled { border-left-color: #17a2b8; }
+.schedule-card.in_progress { border-left-color: #007bff; }
+.schedule-card.completed { border-left-color: #28a745; }
+.schedule-card.delayed { border-left-color: #dc3545; }
+
+.order-info h3 {
+    margin: 0 0 15px;
+    color: #333;
+}
+
+.order-info p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.schedule-info {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.schedule-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.progress-tracker {
+    margin-top: 15px;
+}
+
+.chart-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    height: 300px;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 1200px) {
+    .jobs-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .jobs-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Remove footer styles if present */
+.admin-footer,
+.footer {
+    display: none;
+}
+
+.employees-list {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0 0;
+}
+
+.employees-list li {
+    padding: 3px 0;
+    color: #555;
+}
+
+.no-employees {
+    color: #888;
+    font-style: italic;
+    margin: 5px 0 0 0;
+}

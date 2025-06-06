@@ -4,8 +4,17 @@ import { Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./Product.css";
 
+const handleNextStep = (e) => {
+  e.preventDefault();
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+};
+
 const AboutUsContent = {
-  title: "About Pentagon Printers",
+  title: "About Us",
   description: `With over a decade of excellence in the printing industry, Pentagon Printers stands as your trusted partner for all printing needs. We specialize in delivering high-quality printing solutions, from business essentials to personalized merchandise.
 
   Our state-of-the-art technology combined with expert craftsmanship ensures exceptional quality in every project. We take pride in our commitment to customer satisfaction, offering quick turnaround times and competitive pricing without compromising on quality.
@@ -75,7 +84,7 @@ const Product = () => {
           ))}
         </Carousel>
       </section>
-
+          <br />
       {/* About Us Section */}
       <section className="about-us">
         <h2 className="homeHeader">{AboutUsContent.title}</h2>
@@ -124,7 +133,7 @@ const Product = () => {
         <h2 className="homeHeader">TRENDING PRODUCTS</h2>
         <div className="homeColors">
           {trendingProducts.map((product) => (
-            <div key={product.id}>
+            <div key={product.id} onClick={handleNextStep}>
               <Link 
                 to={`/product/${product.id}/customize`}
                 state={{ productImage: product.image, productName: product.name }}

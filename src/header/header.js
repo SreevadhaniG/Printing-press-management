@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "./Header.css";
+import "./header.css";
 import { useAuth } from '../context/AuthContext';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase/config';
+import { useNotifications } from '../context/NotificationContext';
 
 const Header = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -23,6 +24,8 @@ const Header = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   const defaultProfileImage = '/assets/default-profile.png';
+
+  const { notifications, removeNotification } = useNotifications();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -154,7 +157,7 @@ const Header = () => {
               <i className="bi bi-list"></i>
             </button>
             
-            <h1 className="logo">Pentagon Printers</h1>
+            <h1 className="logo"><a href="/product" className="logo text-decoration-none text-dark">Pentagon Printers</a></h1>
           </div>
 
           {/* Center Section - Empty on larger screens */}
@@ -163,10 +166,13 @@ const Header = () => {
           {/* Right Section */}
           <div className="d-flex align-items-center">
             
-            <button className="btn border-0 me-3 d-none d-md-block">
-              <i className="bi bi-telephone"></i>
+            <button 
+              className="btn border-0 me-3 d-none d-md-block"
+              onClick={() => navigate('/chatbot')}
+            >
+              <i className="bi bi-chat-dots"></i>
             </button>
-            <button className="btn border-0 me-3 d-none d-md-block">
+            <button className="btn border-0 me-3 d-none d-md-block" onClick={() => navigate('/orders')}>
               <i className="bi bi-cart"></i>
             </button>
             <div className="profile-container">
@@ -195,6 +201,28 @@ const Header = () => {
                           </div>
                           <p className="user-email">{user.email}</p>
                         </div>
+                        
+                        {/* Notifications Section */}
+                        <div className="notifications-section">
+                          {notifications.map(notification => (
+                            <div key={notification.id} className="notification-card">
+                              <button 
+                                className="close-notification"
+                                onClick={() => removeNotification(notification.id)}
+                              >
+                                <i className="bi bi-x"></i>
+                              </button>
+                              <h4>{notification.message}</h4>
+                              <div className="notification-details">
+                                <p>Order ID: {notification.orderId}</p>
+                                <p>Product: {notification.productDetails.name}</p>
+                                <p>Quantity: {notification.productDetails.quantity}</p>
+                                <p>Amount: ₹{notification.productDetails.price.toFixed(2)}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        
                         <button onClick={() => handleSignOut()}>Sign Out</button>
                       </>
                     ) : (

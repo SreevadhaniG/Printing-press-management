@@ -1,54 +1,69 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { signInWithEmail, signInWithGoogle } from "./authService";
+import { useAuth } from "../context/AuthContext";
 import "./login.css";
 import googleLogo from "./google_logo.png";
 
 const Login = () => {
-  const [email, setEmail] = useState(localStorage.getItem("email") || "");
+  const { signIn, signInWithGoogle } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(
     localStorage.getItem("rememberMe") === "true"
   );
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  const previousPage = location.state?.from || "/product"; // Default to /product if no previous page
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      setError(null);
-      const userEmail = await signInWithEmail(email, password);
-      if (userEmail) {
-        if (rememberMe) {
-          localStorage.setItem("email", email);
-          localStorage.setItem("rememberMe", "true");
-        } else {
-          localStorage.removeItem("email");
-          localStorage.removeItem("rememberMe");
-        }
-        navigate('/product'); // Always navigate to product page after successful login
-      }
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+  const handleLoginSuccess = () => {
+    const redirectData = sessionStorage.getItem('redirectUrl');
+    if (redirectData) {
+      const { pathname, state } = JSON.parse(redirectData);
+      sessionStorage.removeItem('redirectUrl');
+      navigate(pathname, { state });
+    } else {
+      navigate('/');
     }
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+        setLoading(true);
+        setError("");
+        await signIn(email, password);
+
+        // Check if user is admin
+        if (email === process.env.REACT_APP_ADMIN_EMAIL) {
+            navigate("/admin/dashboard");
+        } else {
+            // For regular users, redirect to products
+            handleLoginSuccess();
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        setError('Failed to sign in');
+    } finally {
+        setLoading(false);
+    }
+};
 
   const handleGoogleLogin = async () => {
     try {
       setLoading(true);
+      setError("");
       const userEmail = await signInWithGoogle();
-      if (userEmail) {
-        navigate('/product');
+      
+      // Check if user is admin
+      if (userEmail === process.env.REACT_APP_ADMIN_EMAIL) {
+          navigate("/admin/dashboard");
+      } else {
+          handleLoginSuccess();
       }
-    } catch (err) {
-      setError(err.message);
+    } catch (error) {
+      console.error('Google login error:', error);
+      setError('Failed to sign in with Google');
     } finally {
       setLoading(false);
     }
@@ -56,11 +71,8 @@ const Login = () => {
 
   const handleBackButton = (e) => {
     e.preventDefault();
-    if (location.state?.from) {
-      navigate(location.state.from);
-    } else {
-      navigate("/product");
-    }
+    // Use browser's history to go back
+    window.history.back();
   };
 
   return (
@@ -70,7 +82,7 @@ const Login = () => {
       </a>
       <h2>Welcome Back</h2>
 
-      <button className="google-btn" onClick={handleGoogleLogin}>
+      <button className="google-btn" onClick={handleGoogleLogin} disabled={loading}>
         <img src={googleLogo} alt="Google" />
         Sign In with Google
       </button>
@@ -102,7 +114,7 @@ const Login = () => {
         <label htmlFor="remember">Remember Me</label>
       </div>
 
-      <button className="sign-in-btn" onClick={handleLogin} disabled={loading}>
+      <button className="sign-in-btn" onClick={handleSubmit} disabled={loading}>
         {loading ? "Signing In..." : "Sign In"}
       </button>
       {error && <p className="error">{error}</p>}

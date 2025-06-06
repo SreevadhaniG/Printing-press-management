@@ -1,0 +1,157 @@
+.dashboard {
+    width: 100vw;
+    padding: 2rem;
+    background: #f8f9fa;
+}
+
+.stats-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: #1a1a1a;
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.stat-card.positive .stat-value {
+    color: #4caf50;
+}
+
+.stat-card.negative .stat-value {
+    color: #f44336;
+}
+
+.stat-value {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #ffd700;
+    margin: 0.5rem 0;
+    animation: pulse 2s infinite;
+}
+
+.stat-label {
+    font-size: 1rem;
+    opacity: 0.8;
+    color: #fff;
+}
+
+.charts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    width: fit-content;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    width: 100%;
+}
+
+.chart-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    min-height: 400px;
+    width: 100%;
+}
+
+.chart-card h3 {
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.daily-chart {
+    margin-bottom: 2rem;
+}
+
+.product-management {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.chart-container {
+    width: 100%;
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.chart-container.large {
+    grid-column: span 2;
+}
+
+.chart-title {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.download-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #000;
+    color: white;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+    transform: translateY(-2px);
+    background: #333;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.download-btn svg {
+    font-size: 1.2rem;
+}
+
+h2, h3 {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    color: #333;
+}
+
+@keyframes countUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@media (max-width: 1200px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .chart-container.large {
+        grid-column: auto;
+    }
+}
