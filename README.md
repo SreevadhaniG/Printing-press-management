@@ -1,75 +1,103 @@
-<<<<<<< HEAD
-# Getting Started with Create React App
+# Pentagon Press - Printing Press Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A comprehensive **Job Scheduling and Order Management System** for printing press operations built with the MERN stack. This application streamlines printing press workflows by managing orders, scheduling jobs, tracking employees, and providing real-time analytics.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+### Admin Module
+- **Dashboard Analytics**: Real-time overview of orders, jobs, and employee performance with Chart.js visualizations
+- **Order Management**: Create, track, and manage customer orders through their complete lifecycle
+- **Job Scheduling**: Intelligent job scheduling system to optimize printing press operations
+- **Employee Management**: Manage employee profiles, roles, and task assignments
+- **Admin Profile**: Dedicated admin profile management and settings
 
-### `npm start`
+### Employee Module
+- **Job Schedule Viewer**: View assigned jobs and schedules
+- **Task Management**: Track and update job progress
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Customer Features
+- **Order Placement**: Easy-to-use order form for customers
+- **Product Catalog**: Browse available printing products and services
+- **Payment Processing**: Integrated payment handling
+- **Order Tracking**: Real-time order status updates
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Additional Features
+- **AI Chatbot**: Intelligent chatbot assistance for common queries
+- **PDF Generation**: Generate invoices and reports using jsPDF
+- **Authentication**: Secure login and route protection
+- **Responsive Design**: Bootstrap-based responsive UI
 
-### `npm test`
+## Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Frontend
+- **React** (v18.2.0) - UI library
+- **React Router DOM** (v6.20.1) - Client-side routing
+- **Bootstrap** (v5.3.3) & React Bootstrap (v2.9.1) - UI framework
+- **Chart.js** (v4.4.8) & React Chart.js 2 - Data visualization
+- **React Icons** (v4.12.0) - Icon library
+- **Sass** (v1.69.5) - CSS preprocessor
+- **date-fns** (v2.30.0) - Date utility library
 
-### `npm run build`
+### Backend
+- **Node.js** with **Express** (v4.17.1) - Server framework
+- **MongoDB** (v6.3.0) with **Mongoose** (v6.0.12) - Database
+- **Firebase** (v10.7.1) & Firestore - Real-time database and authentication
+- **CORS** (v2.8.5) - Cross-origin resource sharing
+- **Body Parser** (v1.19.0) - Request parsing
+- **dotenv** (v10.0.0) - Environment configuration
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Document Generation
+- **jsPDF** (v3.0.1) - PDF generation
+- **jsPDF AutoTable** (v5.0.2) - Table formatting in PDFs
+- **@react-pdf/renderer** (v4.3.0) - React-based PDF rendering
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Getting Started
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Prerequisites
+- Node.js (v14 or higher)
+- MongoDB instance
+- Firebase account for authentication and Firestore
 
-### `npm run eject`
+### Installation
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/SreevadhaniG/Printing-press-management.git
+   cd Printing-press-management
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+3. **Configure environment variables**
+   
+   Create a `.env` file in the root directory:
+   ```env
+   REACT_APP_FIREBASE_API_KEY=your_firebase_api_key
+   REACT_APP_FIREBASE_AUTH_DOMAIN=your_auth_domain
+   REACT_APP_FIREBASE_PROJECT_ID=your_project_id
+   REACT_APP_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+   REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+   REACT_APP_FIREBASE_APP_ID=your_app_id
+   MONGODB_URI=your_mongodb_connection_string
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+4. **Start the development server**
+   ```bash
+   npm start
+   ```
+   The application will open at [http://localhost:3000](http://localhost:3000)
 
-## Learn More
+5. **Start the backend server** (in a separate terminal)
+   ```bash
+   cd server
+   node server.js
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Build for Production
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-=======
-# Pentagon-Press
-This project is about Streamlined Job Scheduling and Order Management for Printing Press using MERN stack
->>>>>>> 1334151 (Initial commit)
+```bash
+npm run build
+```
