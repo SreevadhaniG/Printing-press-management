@@ -8,6 +8,7 @@ import { setupPDFDocument } from '../../utils/pdfGenerator';
 
 const EmployeeManagement = () => {
     const [employees, setEmployees] = useState([]);
+    const [attendanceEditMode, setAttendanceEditMode] = useState({});
     const [editingEmployee, setEditingEmployee] = useState(null);
     const [formData, setFormData] = useState({});
     const [showAddForm, setShowAddForm] = useState(false);
@@ -66,6 +67,11 @@ const EmployeeManagement = () => {
                     }
                     : emp
             ));
+
+            setAttendanceEditMode(prev => ({
+                ...prev,
+                [employeeId]: false
+            }));
 
         } catch (error) {
             console.error('Error updating attendance:', error);
@@ -223,18 +229,38 @@ const EmployeeManagement = () => {
 
     const renderAttendanceButtons = (employee) => {
         const today = new Date().toISOString().split('T')[0];
-        const currentStatus = employee.attendance?.[today] || 'absent';
+        const currentStatus = employee.attendance?.[today];
+        const isEditingAttendance = attendanceEditMode[employee.id];
+
+        if (currentStatus && !isEditingAttendance) {
+            return (
+                <div className="attendance-marked">
+                    <span className={`status ${currentStatus}`}>
+                        {currentStatus.charAt(0).toUpperCase() + currentStatus.slice(1)}
+                    </span>
+                    <button
+                        className="change-btn"
+                        onClick={() => setAttendanceEditMode(prev => ({
+                            ...prev,
+                            [employee.id]: true
+                        }))}
+                    >
+                        Change
+                    </button>
+                </div>
+            );
+        }
 
         return (
             <div className="attendance-buttons">
                 <button 
-                    className={`attendance-btn ${currentStatus === 'present' ? 'active' : ''}`}
+                    className="attendance-btn"
                     onClick={() => handleAttendance(employee.id, 'present')}
                 >
                     Present
                 </button>
                 <button 
-                    className={`attendance-btn ${currentStatus === 'absent' ? 'active' : ''}`}
+                    className="attendance-btn absent-btn"
                     onClick={() => handleAttendance(employee.id, 'absent')}
                 >
                     Absent

@@ -485,6 +485,12 @@ button:disabled {
     width: 90%;
 }
 
+.change-btn{
+    background-color: #fff;
+    color: #000;
+    border: none;
+}
+
 @media (max-width: 768px) {
     .employees-grid {
         grid-template-columns: 1fr;
